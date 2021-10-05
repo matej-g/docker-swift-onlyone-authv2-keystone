@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-LABEL Author="beaukode <jeremie.colombo@gmail.com>"
+LABEL Author="matej-g <matejgera@gmail.com>"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         && apt-get install -y supervisor \

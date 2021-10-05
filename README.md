@@ -33,7 +33,7 @@ $ docker volume create swift_storage
 Create the "onlyone" container. 
 
 ```bash
-$ docker run -d --rm --name swift-onlyone -p 8080:8080 -p 5000:5000 -v swift_storage:/srv -t beaukode/docker-swift-onlyone-authv2-keystone
+$ docker run -d --rm --name swift-onlyone -p 8080:8080 -p 5000:5000 -v swift_storage:/srv -t gmat90/docker-swift-onlyone-authv2-keystone
 ```
 
 With that container running we can now check the logs.
@@ -47,7 +47,7 @@ At this point OpenStack Swift is running.
 ```bash
 $ docker ps
 CONTAINER ID        IMAGE                                           COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-5d67fd3dd72b        beaukode/docker-swift-onlyone-authv2-keystone   "/bin/sh -c /usr/loc…"   3 seconds ago       Up 2 seconds        0.0.0.0:5000->5000/tcp, 0.0.0.0:8080->8080/tcp   swift-onlyone
+5d67fd3dd72b        gmat90/docker-swift-onlyone-authv2-keystone   "/bin/sh -c /usr/loc…"   3 seconds ago       Up 2 seconds        0.0.0.0:5000->5000/tcp, 0.0.0.0:8080->8080/tcp   swift-onlyone
 ```
 
 We can now use the Swift python client to access Swift using the Docker forwarded port, in this example port 8080.
@@ -67,7 +67,7 @@ X-Put-Timestamp: 1549462858.74897
 If you want to add a storage container on start-up, just define an enviroment variable `SWIFT_DEFAULT_CONTAINER` with a name of required container.
 
 ```bash
-$ docker run -d --name swift-onlyone -p 8080:8080 -p 5000:5000 -e SWIFT_DEFAULT_CONTAINER=user_uploads -v swift_storage:/srv -t beaukode/docker-swift-onlyone-authv2-keystone
+$ docker run -d --name swift-onlyone -p 8080:8080 -p 5000:5000 -e SWIFT_DEFAULT_CONTAINER=user_uploads -v swift_storage:/srv -t gmat90/docker-swift-onlyone-authv2-keystone
 ```
 
 Try uploading a file:
