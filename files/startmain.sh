@@ -124,13 +124,42 @@ if [[ "$success" = false ]]; then
     echo "Connection failed after max retries, preload may fail!"
     exit 1
 fi
-openstack service create --name swift object-store
-sleep 1
-openstack endpoint create \
+
+success=false
+for i in {1..10}; do
+    if openstack service create --name swift object-store; then
+        echo "Swift service created"
+        success=true
+        break
+    else
+        echo "Creating service failed, attempt #$i of 10"
+        sleep 1
+    fi
+done
+if [[ "$success" = false ]]; then
+    echo "Creating service failed, exiting"
+    exit 1
+fi
+
+success=false
+for i in {1..10}; do
+    if openstack endpoint create \
     --publicurl "http://${public_host}:8080/v1/AUTH_\$(tenant_id)s" \
     --adminurl 'http://localhost:8080/' \
     --internalurl 'http://localhost:8080/v1/AUTH_$(tenant_id)s' \
-    --region RegionOne swift
+    --region RegionOne swift; then
+        echo "Openstack endpoint created"
+        success=true
+        break
+    else
+        echo "Creating Openstack endpoint failed, attempt #$i of 10"
+        sleep 1
+    fi
+done
+if [[ "$success" = false ]]; then
+    echo "Creating Openstack endpoint failed, exiting"
+    exit 1
+fi
 
 
 echo "Swift is ready to use binding port 5001"
